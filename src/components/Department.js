@@ -1,19 +1,27 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
+import {Button} from 'react-bootstrap'
+import {AddDeptModal} from "./AddDeptModal";
 
 const Department = () => {
   const [deps, setDeps] = useState([]);
-  console.log(deps);
+  const [showModal, setshowModal] = useState(false)
+
+  const alertOption = (e) => {
+    e.preventDefault();
+    console.log(e.target.departmentName.value);
+    setshowModal(false);
+  };
   const getDepartments = () => {
     // const url = "https://localhost:44320/api/"
     fetch(`/department`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setDeps(data);
       });
   };
+
 
   useEffect(() => {
     getDepartments();
@@ -21,6 +29,11 @@ const Department = () => {
 
   return (
     <div className="container">
+        <Button
+        variant="primary"
+        onClick={() => setshowModal(true)}
+        className="mb-2"
+      >Add department</Button>
       <Table>
         <thead>
           <tr>
@@ -35,12 +48,14 @@ const Department = () => {
               <tr key={index}>
                 <td>{data.deptId}</td>
                 <td>{data.name}</td>
-                <td>Edit / Delete</td>
+                <td>
+                  <Button>Edit </Button> <Button variant="danger">Delete</Button></td>
               </tr>
             );
           })}
         </tbody>
       </Table>
+      <AddDeptModal show={showModal} onHide={() => setshowModal(false)} alertOption={alertOption} />
     </div>
   );
 };
