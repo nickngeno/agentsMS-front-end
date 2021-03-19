@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import { AdddeptModal } from "./AdddeptModal";
 import { DeletedeptModal } from "./DeletedeptModal";
+import { EditDepartmentModal } from "./EditDepartmentModal";
 
 const Department = () => {
   const data = [
@@ -43,12 +44,18 @@ const Department = () => {
   //   getDepartments();
   // },[deps]);
 
+  const handleEdit = (id) =>{
+    console.log(id)
+  }
   const alertOption = (e) => {
     e.preventDefault();
     console.log(e.target.departmentName.value);
     setshowModal(false);
   };
   const [showModal, setshowModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState({show:false, deptId:""});
+  const [editModal, setEditModal] = useState({show:false, deptId:"",name:""});
+  // const [dept,deptId, name] = deps;
   return (
     <div className="container">
       <Button
@@ -58,7 +65,7 @@ const Department = () => {
       >
         Add department
       </Button>
-      <Table>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>ID</th>
@@ -73,8 +80,8 @@ const Department = () => {
                 <td>{element.deptId}</td>
                 <td>{element.name}</td>
                 <td>
-                  <Button variant="primary" className="mr-2" >Edit</Button>
-                  <Button variant="danger" onClick={() => setshowModal(true)}>
+                  <Button variant="primary" className="mr-2" onClick={() => setEditModal({show:true,deptId:element.deptId, name:element.name})} >Edit</Button>
+                  <Button variant="danger" onClick={() => setDeleteModal({show:true,deptId:element.deptId})}>
                     Delete
                   </Button>
                 </td>
@@ -88,9 +95,10 @@ const Department = () => {
         onHide={() => setshowModal(false)}
         alertOption={(e) => alertOption(e)}
       />
-      <DeletedeptModal show={showModal} onHide={() => setshowModal(false)} />;
+      <EditDepartmentModal show={editModal.show} onHide={() => setEditModal({show:false})} item = {editModal} handleEdit={handleEdit} />
+      <DeletedeptModal show={deleteModal.show} onHide={() => setDeleteModal(false)} item = {deleteModal.deptId}  />
     </div>
   );
-};
+}
 
 export default Department;
