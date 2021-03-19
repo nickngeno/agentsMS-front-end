@@ -73,7 +73,7 @@ const Department = () => {
                 <td>{element.deptId}</td>
                 <td>{element.name}</td>
                 <td>
-                  <Button variant="primary">Edit</Button>
+                  <Button variant="primary" className="mr-2" >Edit</Button>
                   <Button variant="danger" onClick={() => setshowModal(true)}>
                     Delete
                   </Button>
