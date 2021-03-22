@@ -7,18 +7,40 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export const AdddeptModal = ({ show, onHide,alertOption }) => {
+export const AdddeptModal = ({ show, onHide }) => {
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const requestdata = {
+      method: "POST",
+      headers: {
+        "Accept": "application/json, text/plain",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: e.target.departmentname.value,
+      })
+    }
+    fetch('/department', requestdata)
+    .then((response) => response.json())
+    .then((result) => {
+        console.log(result);
+      })
+    .catch((error) => {
+        console.log(error);
+      });
+    onHide()
+  };
   return (
     <>
       <Modal show={show} onHide={onHide}>
-        <Form onSubmit={alertOption} >
+        <Form onSubmit={handleSubmit} >
           <ModalHeader closeButton>
             <ModalTitle>Add department</ModalTitle>
           </ModalHeader>
           <ModalBody>
             <Form.Group controlId="deptInput">
-              <Form.Control type="text" name= "departmentName" placeholder="Enter department name" />
+              <Form.Control type="text" name= "departmentname" placeholder="Enter department name" required />
             </Form.Group>
           </ModalBody>
           <ModalFooter>

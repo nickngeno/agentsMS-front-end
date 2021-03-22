@@ -1,44 +1,51 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import {AddEmployeeModal} from './AddEmployeeModal'
-import {DeleteEmployeeModal} from './DeleteEmployeeModal'
-import {EditEmployeeModal} from './EditEmployeeModal'
-import {useState } from 'react'
+import {AddAgentModal} from './AddAgentModal'
+import {DeleteAgentModal} from './DeleteAgentModal'
+import {EditAgentModal} from './EditAgentModal'
+import {useState, useEffect } from 'react'
 
 const Agent = () => {
-  const employees = [
-    {
-      id: 1,
-      firstname: "Nick",
-      lastname: "Ngeno",
-      doj: "01/2/2020",
-      department: "IT",
-    },
-    {
-      id: 2,
-      firstname: "vik",
-      lastname: "Ngeno",
-      doj: "01/2/2020",
-      department: "Finance",
-    },
-    {
-      id: 3,
-      firstname: "Pat",
-      lastname: "bobo",
-      doj: "01/3/2020",
-      department: "HR",
-    },
-  ];
+  // const agents = [
+  //   {
+  //     id: 1,
+  //     firstname: "Nick",
+  //     lastname: "Ngeno",
+  //     doj: "01/2/2020",
+  //     department: "IT",
+  //   },
+  //   {
+  //     id: 2,
+  //     firstname: "vik",
+  //     lastname: "Ngeno",
+  //     doj: "01/2/2020",
+  //     department: "Finance",
+  //   },
+  //   {
+  //     id: 3,
+  //     firstname: "Pat",
+  //     lastname: "bobo",
+  //     doj: "01/3/2020",
+  //     department: "HR",
+  //   },
+  // ];
 
   const [addModal, setAddModal] = useState(false)
   const [editModal, setEditModal] = useState({show:false, firstname:"",lastname:"",doj:"",department:""})
   const [deleteModal, setDeleteModal] = useState({show:false, id:""})
 
-  const handleSubmit = () =>{
-      console.log("handle clicked!")
-  }
+  const [agents , setAgents] =  useState([])
 
+  useEffect(()=>{
+    fetch('/agent')
+    .then(response => response.json())
+    .then(data => {
+      setAgents(data)
+      console.log(data)
+    })
+
+  },[agents])
   const handleUpdate = () =>{
       console.log("update clicked!")
   }
@@ -48,7 +55,7 @@ const Agent = () => {
         variant="primary"
         onClick={() => setAddModal(true)}
         className="mb-2"
-      >Add employee</Button>
+      >Add agent</Button>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -61,27 +68,27 @@ const Agent = () => {
           </tr>
         </thead>
         <tbody>
-          {employees.map((employee, index) => (
+          {agents.map((agent, index) => (
             <tr key={index}>
-              <td>{employee.id}</td>
-              <td>{employee.firstname}</td>
-              <td>{employee.lastname}</td>
-              <td>{employee.doj}</td>
-              <td>{employee.department}</td>
+              <td>{agent.id}</td>
+              <td>{agent.firstname}</td>
+              <td>{agent.lastname}</td>
+              <td>{agent.doj}</td>
+              <td>{agent.department}</td>
               <td>
                 {" "}
-                <Button variant="primary" className="mr-2" onClick={() => setEditModal({show:true,id:employee.id,firstname: employee.firstname,lastname: employee.lastname,doj: employee.doj,department: employee.department})} >
+                <Button variant="primary" className="mr-2" onClick={() => setEditModal({show:true,id:agent.id,firstname: agent.firstname,lastname: agent.lastname,doj: agent.doj,department: agent.department})} >
                   Edit
                 </Button>{" "}
-                <Button variant="danger" onClick={() => setDeleteModal({show: true, id: employee.id}) }>Delete</Button>{" "}
+                <Button variant="danger" onClick={() => setDeleteModal({show: true, id: agent.id}) }>Delete</Button>{" "}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <AddEmployeeModal show={addModal} onHide={ () => setAddModal(false)} handleSubmit={handleSubmit} />
-      <EditEmployeeModal show={editModal.show} onHide={ () => setEditModal({show:false})}  emp={editModal} handleUpdate={handleUpdate} />
-      <DeleteEmployeeModal show={deleteModal.show} item ={deleteModal.id} onHide={ () => setDeleteModal({show:false})} handleSubmit={handleSubmit} />
+      <AddAgentModal show={addModal} onHide={ () => setAddModal(false)} />
+      <EditAgentModal show={editModal.show} onHide={ () => setEditModal({show:false})}  emp={editModal} handleUpdate={handleUpdate} />
+      <DeleteAgentModal show={deleteModal.show} item ={deleteModal.id} onHide={ () => setDeleteModal({show:false})} />
     </div>
   );
 };

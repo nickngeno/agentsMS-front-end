@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import {  Button, ModalFooter } from 'react-bootstrap'
 
-export const DeleteEmployeeModal = ({show, onHide, item, handleSubmit}) => {
+export const DeleteAgentModal = ({show, onHide, item, handleSubmit}) => {
     return (
         <>
             <Modal show={show} onHide={onHide}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import ModalHeader from "react-bootstrap/ModalHeader";
 import ModalTitle from "react-bootstrap/ModalTitle";
@@ -7,7 +7,52 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export const AddEmployeeModal = ({ show, onHide, handleSubmit }) => {
+export const AddAgentModal = ({ show, onHide }) => {
+
+  const [deps, setDeps] =  useState([])
+
+  useEffect(()=>{
+    fetch('/department')
+    .then(response => response.json())
+    .then(data => {
+      setDeps(data)
+      console.log(data)
+    })
+
+  },[deps])
+
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    console.log(e.target)
+    var body = JSON.stringify({
+      firstname: e.target.firstname.value,
+      lastname: e.target.lastname.value,
+      doj: e.target.doj.value,
+      department: e.target.departmentname.value,
+    })
+    console.log(body)
+    // try{
+    //   fetch('/employee',{
+    //     method: "POST",
+    //     headers: { 
+    //       "Accept": "application/json",
+    //       "Content-Type": "application/json"
+    //     },
+    //     body:JSON.stringify({
+    //       firstname: e.target.firstname.value,
+    //       lastname: e.target.lastname.value,
+    //       doj: e.target.doj.value,
+    //       department: e.target.department.value,
+    //     })
+        
+    //   })
+    // }
+    // catch(error){
+    //   console.log(error)
+      
+    // }
+    onHide()
+}
   return (
     <>
       <Modal show={show} onHide={onHide}>
@@ -26,14 +71,15 @@ export const AddEmployeeModal = ({ show, onHide, handleSubmit }) => {
             </Form.Group>
             <Form.Group controlId="doj">
               <Form.Label>DOJ</Form.Label>
-              <Form.Control type="date" name="doj" placeholder="Enter date of joining" />
+              <Form.Control type="date" name="doj" placeholder="DD/MM/YYYY" />
             </Form.Group>
             <Form.Group controlId="deptInput">
               <Form.Label>Select department</Form.Label>
-              <Form.Control as="select" size="sm" custom>
-                <option>IT</option>
-                <option>Finance</option>
-                <option>HR</option>
+              <Form.Control as="select" name="departmentname" size="sm" custom>
+                {deps.map(department =>(
+                  <option key={department.deptid}>{department.departmentname}</option>
+                ))}
+  
               </Form.Control>
             </Form.Group>
           </ModalBody>

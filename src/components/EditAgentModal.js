@@ -7,7 +7,7 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export const EditEmployeeModal = ({ show, onHide, handleSubmit, emp }) => {
+export const EditAgentModal = ({ show, onHide, handleSubmit, emp }) => {
   return (
     <>
       <Modal show={show} onHide={onHide}>

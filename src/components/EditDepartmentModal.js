@@ -7,8 +7,29 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-export const EditDepartmentModal = ({ show, onHide,item ,handleEdit}) => {
+export const EditDepartmentModal = ({ show, onHide,item }) => {
 
+  const handleEdit = (e) =>{
+    e.preventDefault()
+
+    try{
+      fetch('/department',{
+        method:"PUT",
+        headers:{
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify({
+          deptid: e.target.deptid.value,
+          name:e.target.departmentname.value
+        })
+      })
+    }
+    catch(error){
+      alert(error)
+    }
+    onHide()
+  }
   return (
     <>
       <Modal show={show} onHide={onHide}>
@@ -18,10 +39,10 @@ export const EditDepartmentModal = ({ show, onHide,item ,handleEdit}) => {
           </ModalHeader>
           <ModalBody>
             <Form.Group controlId="deptId">
-              <Form.Control type="text" name= "deptId" defaultValue={item.deptId} disabled />
+              <Form.Control type="text" name= "deptid" defaultValue={item.deptId} disabled />
             </Form.Group>
             <Form.Group controlId="deptInput">
-              <Form.Control type="text" name= "departmentName" defaultValue={item.name} />
+              <Form.Control type="text" name= "departmentname" defaultValue={item.name} />
             </Form.Group>
           </ModalBody>
           <ModalFooter>
