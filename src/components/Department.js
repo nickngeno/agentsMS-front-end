@@ -6,41 +6,20 @@ import { DeletedeptModal } from "./DeletedeptModal";
 import { EditDepartmentModal } from "./EditDepartmentModal";
 
 const Department = () => {
-  // const data = [
-  //   {
-  //     deptId: 1,
-  //     name: "IT",
-  //   },
-  //   {
-  //     deptId: 2,
-  //     name: "Finance",
-  //   },
-  //   {
-  //     deptId: 3,
-  //     name: "HR",
-  //   },
-  //   {
-  //     deptId: 4,
-  //     name: "Semantex",
-  //   },
-  // ];
-
+ 
   const [deps, setDeps] = useState([]);
   const getDepartments = () => {
-    // "proxy": "https://localhost:44320/api",
-    // const url = "https://localhost:44320/api/"
     fetch(`/department`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setDeps(data);
       });
-    // setDeps(data)
   };
 
   useEffect(() => {
     getDepartments();
-  }, [deps]);
+  });
 
   
   const [showModal, setshowModal] = useState(false);

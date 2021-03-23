@@ -7,29 +7,6 @@ import {EditAgentModal} from './EditAgentModal'
 import {useState, useEffect } from 'react'
 
 const Agent = () => {
-  // const agents = [
-  //   {
-  //     id: 1,
-  //     firstname: "Nick",
-  //     lastname: "Ngeno",
-  //     doj: "01/2/2020",
-  //     department: "IT",
-  //   },
-  //   {
-  //     id: 2,
-  //     firstname: "vik",
-  //     lastname: "Ngeno",
-  //     doj: "01/2/2020",
-  //     department: "Finance",
-  //   },
-  //   {
-  //     id: 3,
-  //     firstname: "Pat",
-  //     lastname: "bobo",
-  //     doj: "01/3/2020",
-  //     department: "HR",
-  //   },
-  // ];
 
   const [addModal, setAddModal] = useState(false)
   const [editModal, setEditModal] = useState({show:false, firstname:"",lastname:"",doj:"",department:""})
@@ -42,13 +19,11 @@ const Agent = () => {
     .then(response => response.json())
     .then(data => {
       setAgents(data)
-      console.log(data)
+      // console.log(data)
     })
 
-  },[agents])
-  const handleUpdate = () =>{
-      console.log("update clicked!")
-  }
+  })
+
   return (
     <div className="container">
     <Button
@@ -70,25 +45,25 @@ const Agent = () => {
         <tbody>
           {agents.map((agent, index) => (
             <tr key={index}>
-              <td>{agent.id}</td>
-              <td>{agent.firstname}</td>
-              <td>{agent.lastname}</td>
-              <td>{agent.doj}</td>
+              <td>{agent.agentId}</td>
+              <td>{agent.firstName}</td>
+              <td>{agent.lastName}</td>
+              <td>{agent.dateofJoining}</td>
               <td>{agent.department}</td>
               <td>
                 {" "}
-                <Button variant="primary" className="mr-2" onClick={() => setEditModal({show:true,id:agent.id,firstname: agent.firstname,lastname: agent.lastname,doj: agent.doj,department: agent.department})} >
+                <Button variant="primary" className="mr-2" onClick={() => setEditModal({show:true,id:agent.agentId,firstname: agent.firstName,lastname: agent.lastName,doj: agent.dateofJoining,department: agent.department})} >
                   Edit
                 </Button>{" "}
-                <Button variant="danger" onClick={() => setDeleteModal({show: true, id: agent.id}) }>Delete</Button>{" "}
+                <Button variant="danger" onClick={() => setDeleteModal({show: true, id: agent.agentId}) }>Delete</Button>{" "}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
       <AddAgentModal show={addModal} onHide={ () => setAddModal(false)} />
-      <EditAgentModal show={editModal.show} onHide={ () => setEditModal({show:false})}  emp={editModal} handleUpdate={handleUpdate} />
-      <DeleteAgentModal show={deleteModal.show} item ={deleteModal.id} onHide={ () => setDeleteModal({show:false})} />
+      <EditAgentModal show={editModal.show} onHide={ () => setEditModal({show:false})}  agent={editModal}  />
+      <DeleteAgentModal show={deleteModal.show} agent ={deleteModal} onHide={ () => setDeleteModal({show:false})} />
     </div>
   );
 };
