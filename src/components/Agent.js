@@ -5,37 +5,49 @@ import { Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import { AddAgentModal } from "./AddAgentModal";
 import { DeleteAgentModal } from "./DeleteAgentModal";
-import { EditAgentModal } from "./EditAgentModal";
+import EditAgentModal  from "./EditAgentModal";
 import { useState, useEffect } from "react";
 
 const Agent = () => {
   const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState({
     show: false,
+    id:"",
     firstname: "",
     lastname: "",
     doj: "",
     department: "",
+    picture: ""
   });
   const [deleteModal, setDeleteModal] = useState({ show: false, id: "" });
-  const [isloading, setIsloading] = useState(true);
-
   const [agents, setAgents] = useState([]);
 
   useEffect(() => {
+    let mounted = true
     fetch("/agent")
       .then((response) => response.json())
       .then((data) => {
-        setAgents(data);
-        setIsloading(false);
-        // console.log(data)
+        if(mounted){
+          setAgents(data);
+        }
       });
+
+      return () =>{
+        mounted = false
+      }
   });
 
   return (
     <div className="container">
-      {agents.length === 0 && isloading ? (
-        <Row style={{display:"flex",alignContent:"center",justifyContent:"center"}}>
+      {agents.length === 0 ? (
+        <Row
+          style={{
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+            paddingTop:"1rem"
+          }}
+        >
           <Spinner animation="border" variant="primary"></Spinner>{" "}
         </Row>
       ) : (
@@ -79,6 +91,7 @@ const Agent = () => {
                           lastname: agent.lastName,
                           doj: agent.dateofJoining,
                           department: agent.department,
+                          picture: agent.picture
                         })
                       }
                     >
@@ -101,7 +114,7 @@ const Agent = () => {
           <EditAgentModal
             show={editModal.show}
             onHide={() => setEditModal({ show: false })}
-            agent={editModal}
+            agentdetail={editModal}
           />
           <DeleteAgentModal
             show={deleteModal.show}

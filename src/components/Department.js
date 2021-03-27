@@ -8,21 +8,22 @@ import Spinner from "react-bootstrap/Spinner";
 
 const Department = () => {
   const [deps, setDeps] = useState([]);
-  const [isloading, SetIsloading] = useState(true);
 
-  const getDepartments = () => {
-    fetch(`/department`)
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        setDeps(data);
-        SetIsloading(false);
-      });
-  };
 
   useEffect(() => {
-    getDepartments();
-  });
+    let mounted = true
+      fetch(`/department`)
+      .then((response) => response.json())
+      .then((data) => {
+        if(mounted){
+          setDeps(data);
+        }
+      })
+
+      return () =>{
+        mounted =false
+      }
+  })
 
   const [showModal, setshowModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState({ show: false, deptId: "" });
@@ -34,13 +35,14 @@ const Department = () => {
   // const [dept,deptId, name] = deps;
   return (
     <div className="container">
-      {deps.length === 0 && isloading ? (
+      {deps.length === 0 ? (
         <Row
           style={{
             width: "100%",
             display: "flex",
             justifyContent: "center",
             alignContent: "center",
+            paddingTop:"1rem"
           }}
         >
           {" "}

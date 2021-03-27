@@ -7,9 +7,14 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {Row, Col}  from  'react-bootstrap'
+// import EditAgentModal from './EditAgentModal'
 
 export const AddAgentModal = ({ show, onHide }) => {
   const [deps, setDeps] = useState([]);
+
+  
+  const defaultprofilepic = process.env.REACT_APP_PHOTOSPATHURL + "anonymous.png"
+  const[imgSrc, setImgSrc] = useState(defaultprofilepic)
 
   useEffect(() => {
     fetch("/department")
@@ -28,6 +33,7 @@ export const AddAgentModal = ({ show, onHide }) => {
         timeZone: "EAT",
       }),
       department: e.target.departmentname.value,
+      picture:imgSrc
     });
     console.log(body);
     try {
@@ -42,16 +48,40 @@ export const AddAgentModal = ({ show, onHide }) => {
           lastname: e.target.lastname.value,
           dateofjoining: new Date().toLocaleDateString(),
           department: e.target.departmentname.value,
+          picture:imgSrc
         }),
       });
     } catch (error) {
       console.log(error);
     }
+    setImgSrc(defaultprofilepic)
     onHide();
   };
+
+  const handlefileSubmit = (event) =>{
+    event.preventDefault()
+    console.log(event.target.files[0].name)
+    // const uploadedfile = event.
+    const formdata =  new FormData()
+    formdata.append("myFile",event.target.files[0],event.target.files[0].name)
+    // console.log(formdata)
+    fetch('/agent/saveprofile',{
+      method: "POST",
+      body:formdata
+
+    })
+    .then(response => response.json())
+    .then((result) =>{
+      setImgSrc( process.env.REACT_APP_PHOTOSPATHURL + result)
+      
+    })
+    .catch(error =>{
+      console.log(error)
+    }) 
+  }
   return (
     <>
-      <Modal show={show} onHide={onHide}>
+      <Modal show={show} onHide={onHide} size="lg">
         <Form onSubmit={handleSubmit}>
           <ModalHeader closeButton>
             <ModalTitle>Add Employee</ModalTitle>
@@ -86,16 +116,15 @@ export const AddAgentModal = ({ show, onHide }) => {
                     custom
                   >
                     {deps.map((department) => (
-                      <option key={department.deptid}>{department.name}</option>
+                      <option key={department.deptId}>{department.name}</option>
                     ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
               <Col className="col">
+                <img id="imageCanvas" src={imgSrc} alt="profilephoto" style={{width:"200px", height:"auto"}} ></img>
                 <Form.Group>
-                  <Form.Control type="file" style={{width:"150px", height:"150px", background:"#dcdcde"}} >
-                      
-                  </Form.Control>
+                  <Form.Control type="file" name="profilephoto" onChange={handlefileSubmit}></Form.Control>
                 </Form.Group>
               </Col>
             </Row>
@@ -106,6 +135,8 @@ export const AddAgentModal = ({ show, onHide }) => {
           </ModalFooter>
         </Form>
       </Modal>
+
+      {/* <EditAgentModal  handlefileSubmit={handlefileSubmit}/> */}
     </>
   );
 };
