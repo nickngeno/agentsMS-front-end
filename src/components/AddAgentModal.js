@@ -10,19 +10,24 @@ import {Row, Col}  from  'react-bootstrap'
 
 
 export const AddAgentModal = ({ show, onHide }) => {
-  console.log(show)
   const [deps, setDeps] = useState([]);
 
   const defaultprofilepic = process.env.REACT_APP_PHOTOSPATHURL + "anonymous.png"
   const[imgSrc, setImgSrc] = useState(defaultprofilepic)
 
   useEffect(() => {
+    let mounted = true
     fetch("/department")
       .then((response) => response.json())
       .then((data) => {
-        setDeps(data);
+        if(mounted){
+          setDeps(data);
+        }
       });
-  }, []);
+      return () =>{
+        setImgSrc(defaultprofilepic)
+      }
+  }, [defaultprofilepic]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,8 +65,7 @@ export const AddAgentModal = ({ show, onHide }) => {
 
   const handlefileSubmit = (event) =>{
     event.preventDefault()
-    console.log(event.target.files[0].name)
-    // const uploadedfile = event.
+    // console.log(event.target.files[0].name)
     const formdata =  new FormData()
     formdata.append("myFile",event.target.files[0],event.target.files[0].name)
     fetch('/agent/saveprofile',{

@@ -22,7 +22,6 @@ const Agent = () => {
   const [deleteModal, setDeleteModal] = useState({ show: false, id: "" });
   const [agents, setAgents] = useState([]);
 
-  console.log(addModal)
   useEffect(() => {
     let mounted = true;
     fetch("/agent")
