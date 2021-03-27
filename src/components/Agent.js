@@ -9,7 +9,7 @@ import EditAgentModal from "./EditAgentModal";
 import { useState, useEffect } from "react";
 
 const Agent = () => {
-  const [showaddModal, setShowaddModal] = useState(false);
+  const [addModal, setAddModal] = useState(false);
   const [editModal, setEditModal] = useState({
     show: false,
     id: "",
@@ -21,7 +21,8 @@ const Agent = () => {
   });
   const [deleteModal, setDeleteModal] = useState({ show: false, id: "" });
   const [agents, setAgents] = useState([]);
-// console.log(showaddModal)
+
+  console.log(addModal)
   useEffect(() => {
     let mounted = true;
     fetch("/agent")
@@ -41,12 +42,12 @@ const Agent = () => {
   return (
     <div className="container">
       <Button
-        variant="primary"
-        onClick={() => setShowaddModal(true)}
-        className="mb-2 mt-2"
-      >
-        Add agent
-      </Button>
+            variant="primary"
+            onClick={() => setAddModal(true)}
+            className="mb-2 mt-2"
+          >
+            Add agent
+          </Button>
       {agents.length === 0 ? (
         <Row
           style={{
@@ -111,10 +112,9 @@ const Agent = () => {
               ))}
             </tbody>
           </Table>
-          <AddAgentModal
-            show={showaddModal}
-            onHide={() => setShowaddModal(false)}
-          />
+          </>
+      )}
+          <AddAgentModal show={addModal} onHide={() => setAddModal(false)} />
           <EditAgentModal
             show={editModal.show}
             onHide={() => setEditModal({ show: false })}
@@ -125,8 +125,7 @@ const Agent = () => {
             agent={deleteModal}
             onHide={() => setDeleteModal({ show: false })}
           />
-        </>
-      )}
+     
     </div>
   );
 };

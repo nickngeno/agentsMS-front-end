@@ -8,7 +8,13 @@ import Spinner from "react-bootstrap/Spinner";
 
 const Department = () => {
   const [deps, setDeps] = useState([]);
-
+  const [showModal, setshowModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState({ show: false, deptId: "" });
+  const [editModal, setEditModal] = useState({
+    show: false,
+    deptId: "",
+    name: "",
+  });
 
   useEffect(() => {
     let mounted = true
@@ -25,17 +31,11 @@ const Department = () => {
       }
   })
 
-  const [showModal, setshowModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState({ show: false, deptId: "" });
-  const [editModal, setEditModal] = useState({
-    show: false,
-    deptId: "",
-    name: "",
-  });
-
+ 
+  // const [dept,deptId, name] = deps;
   return (
     <div className="container">
-       <Button
+      <Button
             variant="primary"
             onClick={() => setshowModal(true)}
             className="mb-2 mt-2"
@@ -57,7 +57,7 @@ const Department = () => {
         </Row>
       ) : (
         <>
-         <Table striped bordered hover>
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th>ID</th>
