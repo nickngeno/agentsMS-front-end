@@ -5,60 +5,61 @@ import { Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import { AddAgentModal } from "./AddAgentModal";
 import { DeleteAgentModal } from "./DeleteAgentModal";
-import EditAgentModal  from "./EditAgentModal";
+import EditAgentModal from "./EditAgentModal";
 import { useState, useEffect } from "react";
 
 const Agent = () => {
-  const [addModal, setAddModal] = useState(false);
+  const [showaddModal, setShowaddModal] = useState(false);
   const [editModal, setEditModal] = useState({
     show: false,
-    id:"",
+    id: "",
     firstname: "",
     lastname: "",
     doj: "",
     department: "",
-    picture: ""
+    picture: "",
   });
   const [deleteModal, setDeleteModal] = useState({ show: false, id: "" });
   const [agents, setAgents] = useState([]);
-
+// console.log(showaddModal)
   useEffect(() => {
-    let mounted = true
+    let mounted = true;
     fetch("/agent")
       .then((response) => response.json())
       .then((data) => {
-        if(mounted){
+        if (mounted) {
           setAgents(data);
+          // console.log(data);
         }
       });
 
-      return () =>{
-        mounted = false
-      }
+    return () => {
+      mounted = false;
+    };
   });
 
   return (
     <div className="container">
+      <Button
+        variant="primary"
+        onClick={() => setShowaddModal(true)}
+        className="mb-2 mt-2"
+      >
+        Add agent
+      </Button>
       {agents.length === 0 ? (
         <Row
           style={{
             display: "flex",
             alignContent: "center",
             justifyContent: "center",
-            paddingTop:"1rem"
+            paddingTop: "1rem",
           }}
         >
           <Spinner animation="border" variant="primary"></Spinner>{" "}
         </Row>
       ) : (
         <>
-          <Button
-            variant="primary"
-            onClick={() => setAddModal(true)}
-            className="mb-2"
-          >
-            Add agent
-          </Button>
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -91,7 +92,7 @@ const Agent = () => {
                           lastname: agent.lastName,
                           doj: agent.dateofJoining,
                           department: agent.department,
-                          picture: agent.picture
+                          picture: agent.picture,
                         })
                       }
                     >
@@ -110,7 +111,10 @@ const Agent = () => {
               ))}
             </tbody>
           </Table>
-          <AddAgentModal show={addModal} onHide={() => setAddModal(false)} />
+          <AddAgentModal
+            show={showaddModal}
+            onHide={() => setShowaddModal(false)}
+          />
           <EditAgentModal
             show={editModal.show}
             onHide={() => setEditModal({ show: false })}

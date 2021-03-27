@@ -7,12 +7,12 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {Row, Col}  from  'react-bootstrap'
-// import EditAgentModal from './EditAgentModal'
+
 
 export const AddAgentModal = ({ show, onHide }) => {
+  console.log(show)
   const [deps, setDeps] = useState([]);
 
-  
   const defaultprofilepic = process.env.REACT_APP_PHOTOSPATHURL + "anonymous.png"
   const[imgSrc, setImgSrc] = useState(defaultprofilepic)
 
@@ -26,16 +26,16 @@ export const AddAgentModal = ({ show, onHide }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const body = JSON.stringify({
-      firstname: e.target.firstname.value,
-      lastname: e.target.lastname.value,
-      dateofjoining: new Date().toLocaleDateString("en-GB", {
-        timeZone: "EAT",
-      }),
-      department: e.target.departmentname.value,
-      picture:imgSrc
-    });
-    console.log(body);
+    // const body = JSON.stringify({
+    //   firstname: e.target.firstname.value,
+    //   lastname: e.target.lastname.value,
+    //   dateofjoining: new Date().toLocaleDateString("en-GB", {
+    //     timeZone: "EAT",
+    //   }),
+    //   department: e.target.departmentname.value,
+    //   picture:imgSrc
+    // });
+    // console.log(body);
     try {
       fetch("/agent", {
         method: "POST",
@@ -64,7 +64,6 @@ export const AddAgentModal = ({ show, onHide }) => {
     // const uploadedfile = event.
     const formdata =  new FormData()
     formdata.append("myFile",event.target.files[0],event.target.files[0].name)
-    // console.log(formdata)
     fetch('/agent/saveprofile',{
       method: "POST",
       body:formdata
@@ -135,8 +134,6 @@ export const AddAgentModal = ({ show, onHide }) => {
           </ModalFooter>
         </Form>
       </Modal>
-
-      {/* <EditAgentModal  handlefileSubmit={handlefileSubmit}/> */}
     </>
   );
 };

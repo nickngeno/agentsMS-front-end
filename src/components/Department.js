@@ -32,9 +32,16 @@ const Department = () => {
     deptId: "",
     name: "",
   });
-  // const [dept,deptId, name] = deps;
+
   return (
     <div className="container">
+       <Button
+            variant="primary"
+            onClick={() => setshowModal(true)}
+            className="mb-2 mt-2"
+          >
+            Add department
+          </Button>
       {deps.length === 0 ? (
         <Row
           style={{
@@ -50,15 +57,7 @@ const Department = () => {
         </Row>
       ) : (
         <>
-          <Button
-            variant="primary"
-            onClick={() => setshowModal(true)}
-            className="mb-2"
-          >
-            Add department
-          </Button>
-
-          <Table striped bordered hover>
+         <Table striped bordered hover>
             <thead>
               <tr>
                 <th>ID</th>
