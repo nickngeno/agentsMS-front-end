@@ -26,16 +26,16 @@ export const AddAgentModal = ({ show, onHide }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const body = JSON.stringify({
-      firstname: e.target.firstname.value,
-      lastname: e.target.lastname.value,
-      dateofjoining: new Date().toLocaleDateString("en-GB", {
-        timeZone: "EAT",
-      }),
-      department: e.target.departmentname.value,
-      picture:imgSrc
-    });
-    console.log(body);
+    // const body = JSON.stringify({
+    //   firstname: e.target.firstname.value,
+    //   lastname: e.target.lastname.value,
+    //   dateofjoining: new Date().toLocaleDateString("en-GB", {
+    //     timeZone: "EAT",
+    //   }),
+    //   department: e.target.departmentname.value,
+    //   picture:imgSrc
+    // });
+    // console.log(body);
     try {
       fetch("/agent", {
         method: "POST",

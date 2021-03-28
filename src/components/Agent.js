@@ -22,6 +22,7 @@ const Agent = () => {
   const [deleteModal, setDeleteModal] = useState({ show: false, id: "" });
   const [agents, setAgents] = useState([]);
 
+  console.log(addModal)
   useEffect(() => {
     let mounted = true
     fetch("/agent")
@@ -39,6 +40,13 @@ const Agent = () => {
 
   return (
     <div className="container">
+      <Button
+            variant="primary"
+            onClick={() => setAddModal(true)}
+            className="mb-2 mt-2"
+          >
+            Add agent
+          </Button>
       {agents.length === 0 ? (
         <Row
           style={{
@@ -52,13 +60,6 @@ const Agent = () => {
         </Row>
       ) : (
         <>
-          <Button
-            variant="primary"
-            onClick={() => setAddModal(true)}
-            className="mb-2"
-          >
-            Add agent
-          </Button>
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -110,6 +111,8 @@ const Agent = () => {
               ))}
             </tbody>
           </Table>
+          </>
+      )}
           <AddAgentModal show={addModal} onHide={() => setAddModal(false)} />
           <EditAgentModal
             show={editModal.show}
@@ -121,8 +124,7 @@ const Agent = () => {
             agent={deleteModal}
             onHide={() => setDeleteModal({ show: false })}
           />
-        </>
-      )}
+     
     </div>
   );
 };

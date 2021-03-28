@@ -30,7 +30,7 @@ export const DeletedeptModal = ({ show, onHide, item }) => {
         </Modal.Body>
         <ModalFooter>
           <Button onClick={onHide}>Cancel</Button>
-          <Button onClick={ ()=> handleDelete(item)}>Delete</Button>
+          <Button onClick={ ()=> handleDelete(item)} variant="danger">Delete</Button>
         </ModalFooter>
       </Modal>
     </>
